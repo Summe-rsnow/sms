@@ -1,0 +1,67 @@
+server:
+  port: 8081
+
+
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: sms
+  servlet:
+    multipart:
+      max-file-size: 10MB  # 设置上传文件的最大大小，单位为字节
+      max-request-size: 5MB  # 设置请求数据的最大大小，单位为字节
+  datasource:
+    url: jdbc:mysql://localhost:3306/sms?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    hikari:
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 123456
+      database: 10
+      timeout: 4000ms
+      jedis:
+        pool:
+          max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
+          max-idle: 8 # 连接池中的最大空闲连接
+          min-idle: 0 # 连接池中的最小空闲连接
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    locale: zh # 当地时区
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+    serialization:
+      indent_output: false #格式化输出
+      fail_on_empty_beans: false # 忽略无法转换的对象
+    parser:
+      allow_unquoted_control_chars: true # 允许出现特殊字符和转义符
+      allow_single_quotes: true #允许出现单引号
+
+mybatis-plus:
+  configuration:
+    #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射 addUser -> add_user
+    map-underscore-to-camel-case: true
+    #开启日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #全局延迟加载
+    lazy-loading-enabled: false
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+      logic-delete-value: 1 # 逻辑已删除值
+      logic-not-delete-value: 0 # 逻辑未删除值
+    banner: false
+  mapper-locations: classpath:mapper/*.xml
+
+sa-token:
+  # jwt秘钥
+  jwt-secret-key: ssnow1543
+
+sms:
+  enable: #功能开关
+    phone-code: false # 手机验证码开关
+    verification-code: false # 登录验证码开关
