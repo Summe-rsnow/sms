@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +57,8 @@ public class UserController {
      */
     @ApiOperation("用户登录")
     @PostMapping("/login")
-    public Result<UseLoginVo> login(HttpServletRequest request, HttpServletResponse response, @RequestBody UserLoginDto userLoginDto) {
+    public Result<UseLoginVo> login(HttpServletRequest request, HttpServletResponse response
+            , @RequestBody @Valid UserLoginDto userLoginDto) {
         return iUserService.login(request, response, userLoginDto);
     }
 
