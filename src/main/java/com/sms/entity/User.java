@@ -1,16 +1,11 @@
 package com.sms.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -25,18 +20,15 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("sms_user")
 @ApiModel(value = "User对象", description = "")
-public class User implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
-
+public class User extends BaseEntity{
     @TableField("account")
     private String account;
 
     @TableField("password")
     private String password;
+
+    @TableField("name")
+    private String name;
 
     @TableField("email")
     private String email;
@@ -62,20 +54,6 @@ public class User implements Serializable {
     @TableField("avatar")
     private String avatar;
 
-    @TableField("created_by")
-    private Long createdBy;
-
-    @TableField("updated_by")
-    private Long updatedBy;
-
-    @TableField("created_at")
-    private LocalDateTime createdAt;
-
-    @TableField("updated_at")
-    private LocalDateTime updatedAt;
-
-    @TableField("is_deleted")
-    private Boolean isDeleted;
-
-
+    @TableField("is_ban")
+    private Boolean isBan;
 }

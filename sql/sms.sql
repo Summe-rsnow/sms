@@ -98,6 +98,7 @@ CREATE TABLE
     IF NOT EXISTS sms_user (
         id BIGINT NOT NULL PRIMARY KEY,
         account VARCHAR(255) NOT NULL,
+        name VARCHAR(8) NOT NULL,
         password VARCHAR(255) NOT NULL,
         email VARCHAR(255) NULL,
         phone VARCHAR(20) NULL,
@@ -107,6 +108,7 @@ CREATE TABLE
         age INT NULL,
         role INT NULL,
         avatar VARCHAR(255) NULL,
+        is_ban TINYINT (1) DEFAULT 0 NULL,
         created_by BIGINT NULL,
         updated_by BIGINT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,

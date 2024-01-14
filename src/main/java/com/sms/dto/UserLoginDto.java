@@ -7,8 +7,9 @@ import lombok.Data;
  */
 @Data
 public class UserLoginDto {
-    private String username;
+    private String account;
     private String password;
     private String verificationCode;
+    private String imgId;
     private boolean rememberMe;
 }
