@@ -82,8 +82,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //将验证码存入redis，设置有效期 5分钟
         redisTemplate.boundValueOps("code:" + imgId).set(code, 5, TimeUnit.MINUTES);
         CodeVo codeVo = new CodeVo();
-        codeVo.setVerificationCode(code)
-                .setImgId(imgId);
+        codeVo.setImgId(imgId);
         return Result.success(codeVo);
     }
 

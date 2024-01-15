@@ -33,8 +33,8 @@ public class UserEditDto {
     @Gender
     private Integer gender;
 
-    @DecimalMin(value = "0",message = "年龄不能小于0岁")
-    @DecimalMax(value = "120",message = "年龄不能大于120岁")
+    @DecimalMin(value = "0", message = "年龄不能小于0岁")
+    @DecimalMax(value = "120", message = "年龄不能大于120岁")
     private Integer age;
 
     @Role
