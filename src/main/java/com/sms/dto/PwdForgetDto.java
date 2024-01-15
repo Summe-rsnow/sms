@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class PwdForgetDto {
-    private String username;
+    private String account;
     private String verificationCode;
     private String newPwd;
 }

@@ -1,6 +1,7 @@
 package com.sms.controller;
 
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sms.common.Result;
 import com.sms.dto.*;
@@ -44,6 +45,7 @@ public class UserController {
      */
     @ApiOperation("登录验证码")
     @GetMapping("/vcode")
+    @SaIgnore
     public Result<CodeVo> vcode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         return iUserService.vcode(request, response);
     }
@@ -57,6 +59,7 @@ public class UserController {
      */
     @ApiOperation("用户登录")
     @PostMapping("/login")
+    @SaIgnore
     public Result<UseLoginVo> login(HttpServletRequest request, HttpServletResponse response
             , @RequestBody @Valid UserLoginDto userLoginDto) {
         return iUserService.login(request, response, userLoginDto);
@@ -69,6 +72,7 @@ public class UserController {
      */
     @ApiOperation("用户登出")
     @PostMapping("/logout")
+    @SaIgnore
     public Result<String> logout() {
         return iUserService.logout();
     }
@@ -76,25 +80,25 @@ public class UserController {
     /**
      * remember me功能配套接口 直接通过令牌获取信息
      *
-     * @param request
      * @return
      */
     @ApiOperation("通过令牌获取个人信息")
     @PostMapping("/self/info")
-    public Result<User> selfInfo(HttpServletRequest request) {
-        return iUserService.selfInfo(request);
+    public Result<User> selfInfo() {
+        return iUserService.selfInfo();
     }
 
     /**
      * 忘记密码功能手机验证码获取接口
      *
-     * @param username
+     * @param account
      * @return
      */
     @ApiOperation("手机验证码")
-    @PostMapping("/phone_code/{username}")
-    public Result<String> phoneCode(@PathVariable String username) {
-        return iUserService.phoneCode(username);
+    @PostMapping("/phone_code/{account}")
+    @SaIgnore
+    public Result<String> phoneCode(@PathVariable String account) {
+        return iUserService.phoneCode(account);
     }
 
     /**
@@ -105,6 +109,7 @@ public class UserController {
      */
     @ApiOperation("修改密码")
     @PostMapping("/pwd")
+    @SaIgnore
     public Result<String> pwd(@RequestBody PwdDto pwdDto) {
         return iUserService.resetPassword(pwdDto);
     }
@@ -117,6 +122,7 @@ public class UserController {
      */
     @ApiOperation("忘记密码重设密码")
     @PostMapping("/pwd/forget")
+    @SaIgnore
     public Result<String> pwdForget(@RequestBody PwdForgetDto pwdForgetDto) {
         return iUserService.pwdForget(pwdForgetDto);
     }
@@ -151,31 +157,31 @@ public class UserController {
     /**
      * 用户管理的信息修改接口
      *
-     * @param user
+     * @param userEditDto
      * @return
      */
     @ApiOperation("用户管理信息修改")
     @PostMapping("/edit")
     @CacheEvict(cacheNames = "UserVisualization", allEntries = true)
-    public Result<UseLoginVo> edit(@RequestBody User user) {
-        return iUserService.edit(user);
+    public Result<UseLoginVo> edit(@RequestBody @Valid UserEditDto userEditDto) {
+        return iUserService.edit(userEditDto);
     }
 
     /**
      * 个人修改自己信息的接口
      *
-     * @param user
+     * @param userEditDto
      * @return
      */
     @ApiOperation("个人修改信息")
     @PostMapping("/self/edit")
     @CacheEvict(cacheNames = "UserVisualization", allEntries = true)
-    public Result<UseLoginVo> editInfo(@RequestBody User user) {
-        return iUserService.editInfo(user);
+    public Result<UseLoginVo> editInfo(@RequestBody @Valid UserEditDto userEditDto) {
+        return iUserService.editInfo(userEditDto);
     }
 
     /**
-     * 禁用用户接口 ban=0时为禁用 ban=1时为启用
+     * 禁用用户接口 ban=0时为启用 ban=1时为禁用
      *
      * @param id
      * @param ban
@@ -184,7 +190,7 @@ public class UserController {
     @ApiOperation("禁用用户")
     @PostMapping("/ban/{ban}/{id}")
     public Result<String> banUser(@PathVariable Long id, @PathVariable Integer ban) {
-        return null;
+        return iUserService.ban(id, ban);
     }
 
     /**

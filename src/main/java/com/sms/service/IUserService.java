@@ -2,10 +2,7 @@ package com.sms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sms.common.Result;
-import com.sms.dto.PwdDto;
-import com.sms.dto.PwdForgetDto;
-import com.sms.dto.UserAddDto;
-import com.sms.dto.UserLoginDto;
+import com.sms.dto.*;
 import com.sms.entity.User;
 import com.sms.vo.CodeVo;
 import com.sms.vo.UseLoginVo;
@@ -32,9 +29,9 @@ public interface IUserService extends IService<User> {
 
     Result<String> logout();
 
-    Result<User> selfInfo(HttpServletRequest request);
+    Result<User> selfInfo();
 
-    Result<String> phoneCode(String username);
+    Result<String> phoneCode(String account);
 
     Result<String> resetPassword(PwdDto pwdDto);
 
@@ -42,9 +39,11 @@ public interface IUserService extends IService<User> {
 
     Result<String> add(List<UserAddDto> userAddDtos);
 
-    Result<String> csvUserAdd(MultipartFile file);
+    Result<String> csvUserAdd(MultipartFile file) throws IOException;
 
-    Result<UseLoginVo> edit(User user);
+    Result<UseLoginVo> edit(UserEditDto userEditDto);
 
-    Result<UseLoginVo> editInfo(User user);
+    Result<UseLoginVo> editInfo(UserEditDto userEditDto);
+
+    Result<String> ban(Long id, Integer ban);
 }

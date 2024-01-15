@@ -57,11 +57,9 @@ mybatis-plus:
     banner: false
   mapper-locations: classpath:mapper/*.xml
 
-sa-token:
-  # jwt秘钥
-  jwt-secret-key: ssnow1543
-
 sms:
+  sign-name: 学生成绩管理系统服务
+  template-code: SMS_462235532
   enable: #功能开关
     phone-code: false # 手机验证码开关
     verification-code: false # 登录验证码开关
