@@ -46,4 +46,6 @@ public interface IUserService extends IService<User> {
     Result<UseLoginVo> editInfo(UserEditDto userEditDto);
 
     Result<String> ban(Long id, Integer ban);
+
+    Result<String> delUser(Long id);
 }

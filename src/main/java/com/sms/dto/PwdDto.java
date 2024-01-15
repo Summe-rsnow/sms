@@ -1,5 +1,6 @@
 package com.sms.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -7,6 +8,8 @@ import lombok.Data;
  */
 @Data
 public class PwdDto {
+    @NotNull
     private String oldPwd;
+    @NotNull
     private String newPwd;
 }

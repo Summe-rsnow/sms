@@ -110,7 +110,7 @@ public class UserController {
     @ApiOperation("修改密码")
     @PostMapping("/pwd")
     @SaIgnore
-    public Result<String> pwd(@RequestBody PwdDto pwdDto) {
+    public Result<String> pwd(@RequestBody @Valid PwdDto pwdDto) {
         return iUserService.resetPassword(pwdDto);
     }
 
@@ -123,7 +123,7 @@ public class UserController {
     @ApiOperation("忘记密码重设密码")
     @PostMapping("/pwd/forget")
     @SaIgnore
-    public Result<String> pwdForget(@RequestBody PwdForgetDto pwdForgetDto) {
+    public Result<String> pwdForget(@RequestBody @Valid PwdForgetDto pwdForgetDto) {
         return iUserService.pwdForget(pwdForgetDto);
     }
 
@@ -136,7 +136,7 @@ public class UserController {
     @ApiOperation("用户添加")
     @PostMapping("/add")
     @CacheEvict(cacheNames = "UserVisualization", allEntries = true)
-    public Result<String> add(@RequestBody List<UserAddDto> userAddDtos) {
+    public Result<String> add(@RequestBody @Valid List<UserAddDto> userAddDtos) {
         return iUserService.add(userAddDtos);
     }
 
@@ -203,7 +203,7 @@ public class UserController {
     @PostMapping("/del/{id}")
     @CacheEvict(cacheNames = "UserVisualization", allEntries = true)
     public Result<String> delUser(@PathVariable(value = "id") Long id) {
-        return null;
+        return iUserService.delUser(id);
     }
 
     /**

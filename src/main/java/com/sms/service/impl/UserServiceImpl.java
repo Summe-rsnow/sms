@@ -34,7 +34,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -183,7 +182,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         wrapper.eq(User::getAccount, account);
         User user = userMapper.selectOne(wrapper);
 
-        String md5Password = DigestUtils.md5DigestAsHex(pwdForgetDto.getNewPwd().getBytes());
+        String md5Password = SaSecureUtil.md5(pwdForgetDto.getNewPwd());
         user.setPassword(md5Password);
         //让Mybatis-plus可以自己填充字段
         StpUtil.login(user.getId());
@@ -196,7 +195,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public Result<String> add(List<UserAddDto> userAddDtos) {
         List<User> userList = new ArrayList<>();
         BeanUtils.copyProperties(userAddDtos, userList);
-        userList.forEach(user -> userMapper.insert(user));
+        userList.forEach(user -> {
+            String md5pwd = SaSecureUtil.md5("123456");
+            user.setPassword(md5pwd);
+            userMapper.insert(user);
+        });
         return Result.success("添加成功");
     }
 
@@ -219,7 +222,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         BufferedReader utf8Reader = IoUtil.getUtf8Reader(in);
         CsvReader reader = CsvUtil.getReader();
         List<User> list = reader.read(utf8Reader, User.class);
-        list.forEach(user -> userMapper.insert(user));
+        list.forEach(user -> {
+            String md5pwd = SaSecureUtil.md5("123456");
+            user.setPassword(md5pwd);
+            userMapper.insert(user);
+        });
         return Result.success();
     }
 
@@ -231,6 +238,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user = userMapper.selectById(user.getId());
         UseLoginVo useLoginVo = new UseLoginVo();
         BeanUtils.copyProperties(user, useLoginVo);
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+        useLoginVo.setToken(tokenInfo.getTokenValue());
         return Result.success(useLoginVo);
     }
 
@@ -245,6 +254,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user = userMapper.selectById(user.getId());
         UseLoginVo useLoginVo = new UseLoginVo();
         BeanUtils.copyProperties(user, useLoginVo);
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+        useLoginVo.setToken(tokenInfo.getTokenValue());
         return Result.success(useLoginVo);
     }
 
@@ -257,5 +268,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setIsBan(b).setId(id);
         userMapper.updateById(user);
         return Result.success();
+    }
+
+    @Override
+    public Result<String> delUser(Long id) {
+        return null;
     }
 }
