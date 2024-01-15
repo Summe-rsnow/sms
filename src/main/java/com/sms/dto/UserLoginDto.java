@@ -17,5 +17,5 @@ public class UserLoginDto {
     @NotNull
     private String imgId;
     @NotNull
-    private boolean rememberMe;
+    private Boolean rememberMe;
 }

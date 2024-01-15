@@ -18,7 +18,7 @@ public class UserAddDto {
     @Email
     private String email;//邮箱
     @Gender
-    private String gender;//性别
+    private Integer gender;//性别
     private String location;//籍贯
     @DecimalMin(value = "0",message = "年龄不能小于0岁")
     @DecimalMax(value = "120",message = "年龄不能大于120岁")

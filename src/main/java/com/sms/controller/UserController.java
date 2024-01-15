@@ -9,6 +9,7 @@ import com.sms.entity.User;
 import com.sms.service.IUserService;
 import com.sms.vo.CodeVo;
 import com.sms.vo.UseLoginVo;
+import com.sms.vo.UserPageVo;
 import io.swagger.annotations.ApiOperation;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -216,7 +217,7 @@ public class UserController {
      */
     @ApiOperation("用户信息分页查询")
     @PostMapping("/{page}/{pagesize}")
-    public Result<Page<UseLoginVo>> getUserPage(@PathVariable Integer page, @PathVariable Integer pagesize, @RequestBody UserSelectDto userSelectDto) {
-        return null;
+    public Result<Page<UserPageVo>> getUserPage(@PathVariable Integer page, @PathVariable Integer pagesize, @RequestBody @Valid UserSelectDto userSelectDto) {
+        return iUserService.getUserPage(page, pagesize, userSelectDto);
     }
 }

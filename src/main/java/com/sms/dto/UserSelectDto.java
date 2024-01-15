@@ -1,5 +1,7 @@
 package com.sms.dto;
 
+import com.sms.validation.Gender;
+import com.sms.validation.Role;
 import lombok.Data;
 
 /**
@@ -8,6 +10,8 @@ import lombok.Data;
 @Data
 public class UserSelectDto {
     private String name;
-    private String gender;
-    private Integer userGrant;//权限等级 0管理员 1教师 2学生
+    @Gender
+    private Integer gender;
+    @Role
+    private Integer role;//权限等级 0管理员 1教师 2学生
 }

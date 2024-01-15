@@ -12,6 +12,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sms.common.Result;
 import com.sms.common.SmsConfig;
@@ -25,6 +26,7 @@ import com.sms.utils.ValidateCodePicUtils;
 import com.sms.utils.ValidateCodeUtils;
 import com.sms.vo.CodeVo;
 import com.sms.vo.UseLoginVo;
+import com.sms.vo.UserPageVo;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -197,7 +199,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         BeanUtils.copyProperties(userAddDtos, userList);
         userList.forEach(user -> {
             String md5pwd = SaSecureUtil.md5("123456");
-            user.setPassword(md5pwd);
+            String avatar = IdUtil.fastSimpleUUID();
+            user.setPassword(md5pwd).setAvatar(avatar);
             userMapper.insert(user);
         });
         return Result.success("添加成功");
@@ -224,7 +227,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         List<User> list = reader.read(utf8Reader, User.class);
         list.forEach(user -> {
             String md5pwd = SaSecureUtil.md5("123456");
-            user.setPassword(md5pwd);
+            String avatar = IdUtil.fastSimpleUUID();
+            user.setPassword(md5pwd).setAvatar(avatar);
             userMapper.insert(user);
         });
         return Result.success();
@@ -272,6 +276,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public Result<String> delUser(Long id) {
-        return null;
+        userMapper.deleteById(id);
+        return Result.success();
+    }
+
+    @Override
+    public Result<Page<UserPageVo>> getUserPage(Integer page, Integer pagesize, UserSelectDto userSelectDto) {
+        Page<UserPageVo> voPage = new Page<>(page, pagesize);
+        userMapper.selectUserLoginVoPage(voPage, userSelectDto);
+        return Result.success(voPage);
     }
 }

@@ -3,7 +3,7 @@ package com.sms.vo;
 import lombok.Data;
 
 @Data
-public class UseLoginVo {
+public class UserPageVo {
     private Long id;
     private String account;//账号
     private String name;//真实姓名
@@ -15,7 +15,5 @@ public class UseLoginVo {
     private String idCard;//身份证号码
     private Integer role;//权限等级 0管理员 1教师 2学生
     private Boolean isBan;//是否禁用
-    private Boolean isDeleted;//逻辑删除
     private String avatar;//头像图片的名称
-    private String token;//令牌
 }

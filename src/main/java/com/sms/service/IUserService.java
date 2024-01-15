@@ -1,11 +1,13 @@
 package com.sms.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sms.common.Result;
 import com.sms.dto.*;
 import com.sms.entity.User;
 import com.sms.vo.CodeVo;
 import com.sms.vo.UseLoginVo;
+import com.sms.vo.UserPageVo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,4 +50,6 @@ public interface IUserService extends IService<User> {
     Result<String> ban(Long id, Integer ban);
 
     Result<String> delUser(Long id);
+
+    Result<Page<UserPageVo>> getUserPage(Integer page, Integer pagesize, UserSelectDto userSelectDto);
 }
