@@ -2,6 +2,7 @@ package com.sms.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sms.entity.Forum;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.sms.entity.Forum;
  * @author ssnow
  * @since 2024-01-14
  */
+@Mapper
 public interface ForumMapper extends BaseMapper<Forum> {
 
 }

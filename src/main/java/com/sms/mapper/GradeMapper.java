@@ -2,6 +2,7 @@ package com.sms.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sms.entity.Grade;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.sms.entity.Grade;
  * @author ssnow
  * @since 2024-01-14
  */
+@Mapper
 public interface GradeMapper extends BaseMapper<Grade> {
 
 }
