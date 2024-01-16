@@ -45,10 +45,10 @@ public class UserController {
      * @param response
      */
     @ApiOperation("登录验证码")
-    @GetMapping("/vcode")
+    @PostMapping("/vcode")
     @SaIgnore
-    public Result<CodeVo> vcode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        return iUserService.vcode(request, response);
+    public void vcode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        iUserService.vcode(request, response);
     }
 
     /**

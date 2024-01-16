@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.sms.common.Result;
 import com.sms.dto.*;
 import com.sms.entity.User;
-import com.sms.vo.CodeVo;
 import com.sms.vo.UseLoginVo;
 import com.sms.vo.UserPageVo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ import java.util.List;
  */
 public interface IUserService extends IService<User> {
 
-    Result<CodeVo> vcode(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    void vcode(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     Result<UseLoginVo> login(HttpServletRequest request, HttpServletResponse response, UserLoginDto userLoginDto);
 

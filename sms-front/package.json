@@ -1,5 +1,5 @@
 {
-  "name": "vite-sms",
+  "name": "sms-front",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,12 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.6.5",
     "element-plus": "^2.5.1",
-    "vue": "^3.3.11"
+    "pinia": "^2.1.7",
+    "vue": "^3.3.11",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
-    "axios": "^1.6.5",
     "vite": "^5.0.8"
   }
 }

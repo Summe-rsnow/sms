@@ -43,8 +43,12 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue'
-import axios from 'axios'
+import {onMounted, reactive, ref} from 'vue'
+import {post} from "../net/index.js";
+
+onMounted(() => {
+  loadVcodeImage()
+})
 
 const formModel = reactive({
   account: '',
@@ -67,41 +71,15 @@ const login = () => {
 const vcodeImageUrl = ref()
 
 const loadVcodeImage = () => {
-  // 获取验证码图片
-  axios.post('127.0.0.1/user/vcode', {
-    responseType: 'blob' // 设置响应数据类型为 blob
-  })
-      .then(response => {
-        // 创建一个 URL 对象来生成验证码图片的URL
-        const vcodeImageUrl = URL.createObjectURL(response.data)
-
-        // 在这里可以使用获取到的验证码图片URL进行后续操作
-        console.log('验证码图片URL:', vcodeImageUrl)
-
-        // 获取响应体的数据（根据具体情况进行处理）
-        // 由于验证码图片是通过流直接写回的，响应体可能不包含其他数据，需要根据实际情况进行处理
-        const responseData = response.data
-
-        // 在这里可以使用响应体的数据进行后续操作
-        console.log('响应体数据:', responseData)
-      })
-      .catch(error => {
-        console.error('获取验证码失败:', error)
+  post('/user/vcode', null,
+      (data) => {
+        vcodeImageUrl.value = URL.createObjectURL(data)
       })
 }
 </script>
 
+
 <style scoped>
-.vcodeimg {
-  width: 100%;
-}
-
-<
-/
-script >
-
-<
-style scoped >
 .vcodeimg {
   width: 100%;
 }

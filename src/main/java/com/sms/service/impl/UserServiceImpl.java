@@ -69,11 +69,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     UserMapper userMapper;
 
     @Override
-    public Result<CodeVo> vcode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void vcode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //定义图形验证码的长，宽和长度
         ValidateCodePicUtils.ValidateCodePic validateCodePic = ValidateCodePicUtils.create(140, 37, 4);
         String code = validateCodePic.getCode();
         String imgId = IdUtil.simpleUUID();
+        response.setHeader("PicId", imgId);
         log.info("生成的验证码是：{}", code);
         //输出流，将验证码写回浏览器
         ServletOutputStream servletOutputStream = response.getOutputStream();
@@ -82,8 +83,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //将验证码存入redis，设置有效期 5分钟
         redisTemplate.boundValueOps("code:" + imgId).set(code, 5, TimeUnit.MINUTES);
         CodeVo codeVo = new CodeVo();
-        codeVo.setImgId(imgId);
-        return Result.success(codeVo);
     }
 
     @Override
