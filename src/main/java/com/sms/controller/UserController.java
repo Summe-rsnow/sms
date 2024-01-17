@@ -7,7 +7,6 @@ import com.sms.common.Result;
 import com.sms.dto.*;
 import com.sms.entity.User;
 import com.sms.service.IUserService;
-import com.sms.vo.CodeVo;
 import com.sms.vo.UseLoginVo;
 import com.sms.vo.UserPageVo;
 import io.swagger.annotations.ApiOperation;
@@ -45,10 +44,10 @@ public class UserController {
      * @param response
      */
     @ApiOperation("登录验证码")
-    @PostMapping("/vcode")
+    @GetMapping("/vcode/{uuid}")
     @SaIgnore
-    public void vcode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        iUserService.vcode(request, response);
+    public void vcode(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "uuid") String uuid) throws IOException {
+        iUserService.vcode(request, response,uuid);
     }
 
     /**

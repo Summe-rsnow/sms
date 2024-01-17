@@ -15,16 +15,16 @@ const router = new createRouter({
     routes
 });
 
-// router.beforeEach((to, from) => {
-//     const userStore = useUserStore();
-//     if (userStore.token) {
-//         return true;
-//     } else {
-//         if (to.path === '/') {
-//             return true;
-//         } else {
-//             return {path: '/'};
-//         }
-//     }
-// });
+router.beforeEach((to, from) => {
+    const userStore = useUserStore();
+    if (userStore.token) {
+        return true;
+    } else {
+        if (to.path === '/') {
+            return true;
+        } else {
+            return {path: '/'};
+        }
+    }
+});
 export default router;

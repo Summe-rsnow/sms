@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {useUserStore} from '../stores/index.js';
 
-const userStore = useUserStore();
 const defaultFailure = (msg) => alert(msg);
 const defaultError = (error) => console.log(error);
 
@@ -10,7 +9,9 @@ axios.interceptors.request.use(
         //基础url
         config.baseURL = '/api';
         //不携带cookie
-        config.withCredentials = false;
+        config.withCredentials = true;
+
+        const userStore = useUserStore();
 
         if (userStore.token) { //如果存在令牌
             // 添加通用的请求头

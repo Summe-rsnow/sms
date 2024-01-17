@@ -24,7 +24,7 @@ import java.util.List;
  */
 public interface IUserService extends IService<User> {
 
-    void vcode(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    void vcode(HttpServletRequest request, HttpServletResponse response, String uuid) throws IOException;
 
     Result<UseLoginVo> login(HttpServletRequest request, HttpServletResponse response, UserLoginDto userLoginDto);
 

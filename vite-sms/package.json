@@ -9,15 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "echarts": "^5.4.3",
     "element-plus": "^2.5.1",
-    "less": "^4.1.3",
-    "less-loader": "^11.1.3",
     "pinia": "^2.1.4",
+    "uuid": "^9.0.1",
     "vue": "^3.3.4",
     "vue-axios": "^3.5.2",
-    "vue-router": "^4.2.4",
-    "vue3-cropper": "^0.4.0"
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

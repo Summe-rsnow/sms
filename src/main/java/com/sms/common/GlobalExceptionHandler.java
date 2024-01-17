@@ -14,14 +14,14 @@ import java.sql.SQLException;
  *
  * @author sssnow
  */
-@ControllerAdvice(annotations = {RestController.class, Controller.class})
-@ResponseBody
-@Slf4j
+//@ControllerAdvice(annotations = {RestController.class, Controller.class})
+//@ResponseBody
+//@Slf4j
 public class GlobalExceptionHandler {
-    @ExceptionHandler(Exception.class)//处理异常注解
-    public Result<String> exceptionHandler(SQLException ex) {
-        String message = ex.getMessage();
-        log.error(message);
-        return Result.error("请联系管理员解决问题,错误信息:" + message);
-    }
+//    @ExceptionHandler(Exception.class)//处理异常注解
+//    public Result<String> exceptionHandler(SQLException ex) {
+//        String message = ex.getMessage();
+//        log.error(message);
+//        return Result.error("请联系管理员解决问题,错误信息:" + message);
+//    }
 }

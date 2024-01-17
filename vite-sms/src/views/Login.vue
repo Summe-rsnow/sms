@@ -1,6 +1,7 @@
 <template>
   <el-form
       :model="formModel"
+      :rules="rules"
       status-icon
       label-width="120px"
       class="demo-ruleForm">
@@ -29,7 +30,7 @@
           <el-input v-model="formModel.verificationCode" type="text" placeholder="请按图片输入验证码"/>
         </el-col>
         <el-col :span="9">
-          <el-image class="vcodeimg" fit="fill" :src="vcodeImageUrl" @load="loadVcodeImage"></el-image>
+          <el-image class="vcodeimg" fit="fill" :src="vcodeSrc" @click="refreshVerificationCode"></el-image>
         </el-col>
       </el-row>
     </el-form-item>
@@ -43,34 +44,68 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue'
-import {post} from "../net/index.js"
+import {onBeforeMount, onMounted, reactive, ref} from 'vue'
+import {get, post} from '../net/index.js'
+import {useUserStore} from '../stores/index.js'
+import router from '../router/index.js'
+import {v4} from 'uuid'
+
+const userStore = useUserStore()
+const vcodeSrc = ref('')
+
+const rules = reactive({
+  account: [{required: true, message: '账号不能为空'}],
+  password: [{required: true, message: '密码不能为空'}],
+  confirmPassword: [{required: true, message: '确认密码不能为空'}],
+  verificationCode: [{required: true, message: '验证码不能为空'}]
+})
+
+onMounted(() => {
+  refreshVerificationCode()
+})
+
+onBeforeMount(() => {
+  rememberMe()
+})
 
 const formModel = reactive({
   account: '',
   password: '',
   confirmPassword: '',
   verificationCode: '',
-  rememberMe: false
+  imgId: v4(),
+  rememberMe: true
 })
 
 const login = () => {
-  // 在这里执行登录逻辑，可以通过 formModel 中的各个字段获取表单数据
-  console.log('账号:', formModel.account)
-  console.log('密码:', formModel.password)
-  console.log('确认密码:', formModel.confirmPassword)
-  console.log('验证码:', formModel.verificationCode)
-  console.log('记住我:', formModel.rememberMe)
+  post('/user/login', formModel, (data, msg) => {
+    alert(msg)
+  })
 }
 
-// 假设你可以通过接口获取验证码图片的URL
-const vcodeImageUrl = ref()
+const refreshVerificationCode = () => {
+  vcodeSrc.value = '/api/user/vcode/' + formModel.imgId + `${Date.now()}`
+}
 
-const loadVcodeImage = () => {
-  post('/user/vcode', null,
-      (data) => {
-        vcodeImageUrl.value = URL.createObjectURL(data);
-      })
+const rememberMe = () => {
+  const cookies = document.cookie.split(';')
+  let rememberMeValue = ''
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim()
+    if (cookie.startsWith('rememberMe=')) {
+      rememberMeValue = cookie.substring('rememberMe='.length)
+      break
+    }
+  }
+
+  if (rememberMeValue) {
+    userStore.token = rememberMeValue;
+    get('/user/self/info', (data) => {
+      userStore.user = data
+      router.push('/home')
+    })
+  }
 }
 </script>
 

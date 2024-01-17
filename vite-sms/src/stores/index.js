@@ -15,5 +15,3 @@ export const useUserStore = defineStore('userStore', {
     },
     actions: {}
 })
-
-export default useUserStore;

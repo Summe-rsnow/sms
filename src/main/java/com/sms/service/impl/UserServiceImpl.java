@@ -24,7 +24,6 @@ import com.sms.service.IUserService;
 import com.sms.utils.SendPhoneCodeUtils;
 import com.sms.utils.ValidateCodePicUtils;
 import com.sms.utils.ValidateCodeUtils;
-import com.sms.vo.CodeVo;
 import com.sms.vo.UseLoginVo;
 import com.sms.vo.UserPageVo;
 import jakarta.annotation.Resource;
@@ -69,20 +68,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     UserMapper userMapper;
 
     @Override
-    public void vcode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void vcode(HttpServletRequest request, HttpServletResponse response, String uuid) throws IOException {
         //定义图形验证码的长，宽和长度
-        ValidateCodePicUtils.ValidateCodePic validateCodePic = ValidateCodePicUtils.create(140, 37, 4);
+        ValidateCodePicUtils.ValidateCodePic validateCodePic = ValidateCodePicUtils.create(140, 38, 4);
         String code = validateCodePic.getCode();
-        String imgId = IdUtil.simpleUUID();
-        response.setHeader("PicId", imgId);
         log.info("生成的验证码是：{}", code);
+        //将验证码存入redis，设置有效期 5分钟
+        redisTemplate.boundValueOps("code:" + uuid).set(code, 5, TimeUnit.MINUTES);
         //输出流，将验证码写回浏览器
         ServletOutputStream servletOutputStream = response.getOutputStream();
+        response.setHeader("Cache-Control", "no-store");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
         response.setContentType("image/jpeg");
         validateCodePic.write(servletOutputStream);
-        //将验证码存入redis，设置有效期 5分钟
-        redisTemplate.boundValueOps("code:" + imgId).set(code, 5, TimeUnit.MINUTES);
-        CodeVo codeVo = new CodeVo();
     }
 
     @Override
@@ -107,7 +106,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return Result.error("用户被禁用，无法登录");
         }
         StpUtil.login(user.getId(), new SaLoginModel()
-                .setIsLastingCookie(true)        // 是否为持久Cookie（临时Cookie在浏览器关闭时会自动删除，持久Cookie在重新打开后依然存在）
+                .setIsLastingCookie(userLoginDto.getRememberMe())        // 是否为持久Cookie（临时Cookie在浏览器关闭时会自动删除，持久Cookie在重新打开后依然存在）
                 .setTimeout(60 * 60 * 24 * 7)    // 指定此次登录token的有效期, 单位:秒 （如未指定，自动取全局配置的 timeout 值）
         );
         UseLoginVo useLoginVo = new UseLoginVo();
